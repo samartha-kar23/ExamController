@@ -16,19 +16,51 @@
 <!--  Prevent Browser Refresh -->
 
 <!-- //////////////////////// -->
+<!--  
+<script type = "text/javascript" >
+   function preventBack(){window.history.forward();}
+    setTimeout("preventBack()", 0);
+    window.onunload=function(){null};
+    
+    function requestFullScreen(element) {
+        // Supports most browsers and their versions.
+        var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+
+        if (requestMethod) { // Native full screen.
+            requestMethod.call(element);
+        } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+    }
+    
+    var elem = document.body; // Make the body go full screen.
+    requestFullScreen(elem);
+</script>
+-->
+
 <script>
+/////////////////
+
+
 <%
 String clock = request.getParameter( "clock" );
 
 if( clock == null ) clock = "180";
 %>
-
+function myFunction() {
+	  alert("Allow full screen");
+	  //launchIntoFullscreen(document.documentElement);
+	}
 var timeout = <%=clock%>;
-var butsub = document.getElementByName("sub");
+//var butsub = document.getElementByName("sub");
 function timer()
 {
 if( --timeout > 0 )
 {
+launchIntoFullscreen(document.documentElement); // the whole page
 document.forma.clock.value = timeout;
 window.setTimeout( "timer()", 1000 );
 }
@@ -44,7 +76,11 @@ document.getElementById('save').style.display = 'none';
 }
 </script>
 </head>
-<body>
+<body id="element" onload="launchIntoFullscreen(document.documentElement)">
+	<div>
+		<span>Full Screen Mode Disabled</span>
+		<button id="go-button">Enable Full Screen</button>
+	</div>
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -204,9 +240,31 @@ out.println(cOption);
 
 </div>
 <script>
-
+//window.open ("Solve.jsp","","fullscreen=yes"); self.close();
+//toggleFS();
+if(timeout === 180){
+myFunction();
+}
 timer();
+////////////////////////
+function launchIntoFullscreen(element) {
+  if(element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if(element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if(element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if(element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  }
+}
+/* Get into full screen */
 
+
+
+//////////////////
+//GoInFullscreen($("#element").get(0));
+////////////////////////
 </script>
 </body>
 </html>
